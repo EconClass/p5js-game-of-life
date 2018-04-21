@@ -1,17 +1,16 @@
 var grid;
-//var IsAlive;
 
 function setup () {
   createCanvas(400, 400);
   grid = new Grid(20);
-  //IsAlive = Cell.setIsAlive(floor(random(2)));
 }
 
 function draw () {
   background(250);
-  //grid.updateNeighborCounts();
+  grid.updateNeighborCounts();
   grid.draw();
   grid.randomize();
+  print (grid.updateNeighborCounts);
 }
 
 class Grid {
@@ -23,12 +22,14 @@ class Grid {
     var y = this.numberOfColumns; 
     var cells = new Array(x); 
     this.cells = cells;
+    var liveNeighborCount = 0;
+    this.liveNeighborCount = liveNeighborCount;
     for (var i = 0; i < cells.length; i ++) { 
       cells[i] = new Array(y); 
     }
     for (var column = 0; column < this.numberOfColumns; column ++) { 
       for (var row = 0; row < this.numberOfRows; row++) {  
-        this.cells[column][row] = new Cell(column, row, this.cellSize);
+        this.cells[column][row] = new Cell(column, row, this.cellSize, this.liveNeighborCount);
       }
     }
   }
@@ -44,35 +45,39 @@ class Grid {
   randomize () {
     for (var column = 0; column < this.numberOfColumns; column ++) {
       for (var row = 0; row < this.numberOfRows; row++) {
-        this.cells[column][row].setIsAlive(floor(random(2)));
+        var live = this.cells[column][row].setIsAlive(floor(random(2)));
+      }
+    }
+    this.live = live;
+  }
+
+  updateNeighborCounts () {
+    var currentCell = this.cells;
+    for (var xOffset = -1; xOffset <= 1; xOffset++) {
+      var neighborX = currentCell.column + xOffset
+      if (xOffset <= 0 && xOffset > this.cells.length) {
+        print("bad number");
+      } else {
+        for (var yOffset = -1; yOffset <= 1; yOffset++) {
+        if (yOffset <= 0 && yOffset > this.cells.length){
+          print("bad number");
+        } else {
+          if (this.live == true){
+            this.liveNeighborCount++;
+          }
+        }
       }
     }
   }
-
-  // updateNeighborCounts () {
-  //   for (var column = 0; column < this.numberOfColumns; column ++) {
-  //     for (var row = 0; row < this.numberOfRows; row++) {
-  //       this.cells[column][row].liveNeighborCount();
-  //     }
-  //   }
-
-  //   for (var xOffset = -1; xOffset <= 1; xOffset++) {
-  //     for (var yOffset = -1; yOffset <= 1; yOffset++) {
-  //       var neighborX = currentCell.column + xOffset
-  //       var neighborY = currentCell.row + yOffset
-
-  //       // do something with neighborX and neighborY
-  //     }
-  //   }
-  // }
+}
 }
 
 class Cell {
-  constructor (column, row, cellSize) {
+  constructor (column, row, cellSize, cellNeighborCount) {
     this.column = column;
     this.row = row;
     this.cellSize = cellSize;
-    //this.cellNeighborCount = 0;
+    this.cellNeighborCount = cellNeighborCount;
   }
 
   drawCell () {
@@ -93,8 +98,5 @@ class Cell {
       this.IsAlive = false;
     }
   }
-
-  // liveNeighborCount (){
-  //   this.cellNeighborCount = 0;
-  // }
 }
+
