@@ -10,6 +10,7 @@ function setup () {
 function draw () {
   background(250);
   grid.updateNeighborCounts();
+  //grid.updatePopulation();
   grid.draw();
 }
 
@@ -58,6 +59,7 @@ class Grid {
         //print(currentCell);
         for (var xOffset = -1; xOffset <= 1; xOffset++) {
           var neighborX = currentCell.column + xOffset;
+          //print(neighborX);
           if (neighborX <= 0 && neighborX > this.cells[column].length) {
             //print(neighborX);
           } else {
@@ -78,6 +80,14 @@ class Grid {
       }
     }
   }
+
+  // updatePopulation (){
+  //   for (var column = 0; column < this.numberOfColumns; column ++) { 
+  //     for (var row = 0; row < this.numberOfRows; row++) {  
+  //       this.cells[column][row].liveOrDie();
+  //     }
+  //   }
+  // }
 }
 
 class Cell {
@@ -108,4 +118,14 @@ class Cell {
     }
     //var isAlive = this.IsAlive;
   }
+
+  // liveOrDie () {
+  //   if (this.IsAlive == true && this.cellNeighborCount < 2 || this.cellNeighborCount > 3){
+  //     this.IsAlive = false;
+  //   } else{
+  //     if (this.cellNeighborCount == 3 && this.IsAlive == false) {
+  //       this.IsAlive = true;
+  //     } else {}
+  //   }
+  // }
 }
