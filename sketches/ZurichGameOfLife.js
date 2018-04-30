@@ -3,14 +3,14 @@ var grid;
 function setup () {
   createCanvas(400, 400);
   grid = new Grid(20);
+  grid.randomize();
+  //grid.updateNeighborCounts();//**TEST**
 }
 
 function draw () {
   background(250);
   grid.updateNeighborCounts();
   grid.draw();
-  grid.randomize();
-  print (grid.updateNeighborCounts);
 }
 
 class Grid {
@@ -22,8 +22,8 @@ class Grid {
     var y = this.numberOfColumns; 
     var cells = new Array(x); 
     this.cells = cells;
-    var liveNeighborCount = 0;
-    this.liveNeighborCount = liveNeighborCount;
+    //var liveNeighborCount = this.liveNeighborCount;
+    this.liveNeighborCount = 0;
     for (var i = 0; i < cells.length; i ++) { 
       cells[i] = new Array(y); 
     }
@@ -48,28 +48,36 @@ class Grid {
         var live = this.cells[column][row].setIsAlive(floor(random(2)));
       }
     }
-    this.live = live;
   }
 
   updateNeighborCounts () {
-    var currentCell = this.cells;
-    for (var xOffset = -1; xOffset <= 1; xOffset++) {
-      var neighborX = currentCell.column + xOffset
-      if (xOffset <= 0 && xOffset > this.cells.length) {
-        print("bad number");
-      } else {
-        for (var yOffset = -1; yOffset <= 1; yOffset++) {
-        if (yOffset <= 0 && yOffset > this.cells.length){
-          print("bad number");
-        } else {
-          if (this.live == true){
-            this.liveNeighborCount++;
+    this.liveNeighborCount = 0;
+    for (var column = 0; column < this.numberOfColumns; column ++) {
+      for (var row = 0; row < this.numberOfRows; row++) {
+        var currentCell = this.cells[column][row];
+        //print(currentCell);
+        for (var xOffset = -1; xOffset <= 1; xOffset++) {
+          var neighborX = currentCell.column + xOffset;
+          if (neighborX <= 0 && neighborX > this.cells[column].length) {
+            //print(neighborX);
+          } else {
+            for (var yOffset = -1; yOffset <= 1; yOffset++) {
+              var neighborY = currentCell.row + yOffset;
+              //print(neighborY);
+              if (neighborY <= 0 && neighborY > this.cells[row].length){
+                // print(currentCell);
+              } else {
+                if (currentCell.isAlive == true){
+                  this.liveNeighborCount++;
+                  //print(currentCell.liveNeighborCount);
+                }
+              }
+            }
           }
         }
       }
     }
   }
-}
 }
 
 class Cell {
@@ -78,6 +86,8 @@ class Cell {
     this.row = row;
     this.cellSize = cellSize;
     this.cellNeighborCount = cellNeighborCount;
+    //this.IsAlive = var isAlive;
+    var isAlive = this.IsAlive;
   }
 
   drawCell () {
@@ -91,12 +101,11 @@ class Cell {
   }
 
   setIsAlive (value) {
-    this.value = value;
-    if (this.value == 1){
+    if (value == 1){
       this.IsAlive = true;
     } else {
       this.IsAlive = false;
     }
+    //var isAlive = this.IsAlive;
   }
 }
-
