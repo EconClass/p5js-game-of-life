@@ -53,8 +53,7 @@ class Grid {
     for (var column = 0; column < this.numberOfColumns; column ++) {
       for (var row = 0; row < this.numberOfRows; row++) {
         var currentCell = this.cells[column][row];
-        //currentCell.liveNeighborCount = 0;
-        this.liveNeighborCount = 0;
+        currentCell.liveNeighborCount = 0;
         //print(liveNeighborCount);
         for (var xOffset = -1; xOffset <= 1; xOffset++) {
            var neighborX = currentCell.column + xOffset;
@@ -68,7 +67,7 @@ class Grid {
               }else {//print(this.cells[neighborX][neighborY].IsAlive);
                 if (this.cells[neighborX][neighborY].IsAlive == true) {
                   currentCell.liveNeighborCount++;
-                  //print (currentCell.liveNeighborCount);
+                  print (currentCell.liveNeighborCount);
                 }
               }
             }
