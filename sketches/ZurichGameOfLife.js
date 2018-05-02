@@ -4,13 +4,18 @@ function setup () {
   createCanvas(400, 400);
   grid = new Grid(20);
   grid.randomize();
-  grid.updateNeighborCounts();//**TEST**
+}
+
+function keyPressed (){
+  if (keyCode == ENTER) {
+    grid.randomize();
+  }
 }
 
 function draw () {
   background(250);
-  //grid.updateNeighborCounts();
-  //grid.updatePopulation();
+  grid.updateNeighborCounts();
+  grid.updatePopulation();
   grid.draw();
 }
 
@@ -54,20 +59,18 @@ class Grid {
       for (var row = 0; row < this.numberOfRows; row++) {
         var currentCell = this.cells[column][row];
         currentCell.liveNeighborCount = 0;
-        //print(liveNeighborCount);
         for (var xOffset = -1; xOffset <= 1; xOffset++) {
-           var neighborX = currentCell.column + xOffset;
-           if (neighborX <= 0 || neighborX > this.numberOfColumns){
+          var neighborX = currentCell.column + xOffset;
+          if (neighborX <= 0 || neighborX > this.numberOfColumns - 1){
             //
-           } else {
+          } else {
             for (var yOffset = -1; yOffset <= 1; yOffset++) {
               var neighborY = currentCell.row + yOffset
-              if (neighborY <= 0 || neighborY > this.numberOfRows) {
-                //
-              }else {//print(this.cells[neighborX][neighborY].IsAlive);
-                if (this.cells[neighborX][neighborY].IsAlive == true) {
+              if (neighborY <= 0 || neighborY > this.numberOfRows - 1) {
+              //
+              }else {
+                if (this.cells[neighborX][neighborY].IsAlive == true && this.cells[neighborX][neighborY]!== currentCell) {
                   currentCell.liveNeighborCount++;
-                  print (currentCell.liveNeighborCount);
                 }
               }
             }
@@ -77,13 +80,13 @@ class Grid {
     }
   }
 
-  // updatePopulation (){
-  //   for (var column = 0; column < this.numberOfColumns; column ++) { 
-  //     for (var row = 0; row < this.numberOfRows; row++) {  
-  //       this.cells[column][row].liveOrDie();
-  //     }
-  //   }
-  // }
+  updatePopulation (){
+    for (var column = 0; column < this.numberOfColumns; column ++) { 
+      for (var row = 0; row < this.numberOfRows; row++) {  
+        this.cells[column][row].liveOrDie();
+      }
+    }
+  }
 }
 
 class Cell {
@@ -112,13 +115,17 @@ class Cell {
     }
   }
 
-  // liveOrDie () {
-  //   if (this.IsAlive == true && this.cellNeighborCount < 2 || this.cellNeighborCount > 3){
-  //     this.IsAlive = false;
-  //   } else{
-  //     if (this.cellNeighborCount == 3 && this.IsAlive == false) {
-  //       this.IsAlive = true;
-  //     } else {}
-  //   }
-  // }
+  liveOrDie () {
+    if (this.IsAlive == true){
+      if (this.liveNeighborCount < 2 || this.liveNeighborCount > 3) {
+        this.IsAlive = false;
+      }
+    } else{
+      if (this.IsAlive == false) {
+        if (this.liveNeighborCount == 3) {
+          this.IsAlive = true;
+        }
+      }
+    }
+  }
 }
