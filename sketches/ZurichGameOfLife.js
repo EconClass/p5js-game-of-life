@@ -61,12 +61,12 @@ class Grid {
         currentCell.liveNeighborCount = 0;
         for (var xOffset = -1; xOffset <= 1; xOffset++) {
           var neighborX = currentCell.column + xOffset;
-          if (neighborX <= 0 || neighborX > this.numberOfColumns - 1){
+          if (neighborX < 0 || neighborX > this.numberOfColumns - 1){
             //
           } else {
             for (var yOffset = -1; yOffset <= 1; yOffset++) {
               var neighborY = currentCell.row + yOffset
-              if (neighborY <= 0 || neighborY > this.numberOfRows - 1) {
+              if (neighborY < 0 || neighborY > this.numberOfRows - 1) {
               //
               }else {
                 if (this.cells[neighborX][neighborY].IsAlive == true && this.cells[neighborX][neighborY]!== currentCell) {
